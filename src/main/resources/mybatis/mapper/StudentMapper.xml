@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.dart.studentmanager.mapper.StudentMapper">
+
+    <!--查询学生信息-->
+    <select id="getStudentById" resultType="com.dart.studentmanager.entity.Student">
+        SELECT * FROM students WHERE id = #{id}
+    </select>
+    <select id="getStudentByName" resultType="com.dart.studentmanager.entity.Student">
+        SELECT * FROM students WHERE name = #{name}
+    </select>
+    <!--查询所有学生信息-->
+    <select id="getAllStudent" resultType="com.dart.studentmanager.entity.Student">
+        SELECT * FROM students
+    </select>
+    <!--删除学生信息-->
+    <delete id="deleteStudentById">
+        DELETE FROM students WHERE id = #{id}
+    </delete>
+    <!--增加学生信息-->
+    <insert id="addStudent">
+        INSERT INTO students (id, name, age, sex, birth, address, phone, email) VALUES (#{id}, #{name}, #{age}, #{sex}, #{birth}, #{address}, #{phone}, #{email})
+    </insert>
+    <!--更新学生信息-->
+    <update id="modifyStudent">
+        UPDATE students SET name = #{name}, age = #{age}, sex = #{sex}, birth = #{birth}, address = #{address}, phone = #{phone}, email = #{email} WHERE (id = #{id});
+    </update>
+
+
+</mapper>

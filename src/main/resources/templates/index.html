@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="base/layout.html">
+    <head>
+        <meta charset="UTF-8"/>
+        <link rel="stylesheet" type="text/css" href="index.css"/>
+        <link rel="stylesheet" type="text/css" href="message.css"/>
+        <script type="text/javascript" src="index.js"></script>
+        <script type="text/javascript" src="xlsx.core.min.js"></script>
+        <title>学生信息管理系统</title>
+    </head>
+    <body style="background-color: #f9f3ee">
+        <div style="background-color: #ffffff; height: 56px; align-items: center;">
+            <label style="color: #dd483c; font-size: 24px; float: left; margin-top: 10px; margin-left: 24px; font-weight: bold">学生信息管理系统</label>
+            <label id="username" style="float: right; color: gray; margin-right: 28px; margin-top: 16px;"></label>
+        </div>
+        <div style="display: flex; flex-direction: row">
+            <div style="display: flex; flex-direction: column; box-shadow: 0px 0px 5px lightgray; background-color: #fafafa; position: absolute; height: 92%; width: 18%; text-align: left">
+                <ul style="margin-top: 12px; list-style: none;">
+                    <li id="selectLi" class="menu-li" onclick="selectAll()" style="display: none">
+                        <label class="menu-label">全选</label>
+                    </li>
+                    <li id="addLi" class="menu-li" onclick="addStudent()" style="display: none">
+                        <label class="menu-label">手动增加</label>
+                    </li>
+                    <li id="importLi" class="menu-li" onclick="importStudents()" style="display: none">
+                        <label class="menu-label">批量导入</label>
+                    </li>
+                    <li id="deleteLi" class="menu-li" onclick="deleteStudents()" style="display: none">
+                        <label class="menu-label">删除</label>
+                    </li>
+                    <li id="modifyLi" class="menu-li" onclick="modifyStudentPopup()" style="display: none">
+                        <label class="menu-label">修改</label>
+                    </li>
+                    <li id="logoutLi" class="menu-li" onclick="logout()">
+                        <label class="menu-label">登出</label>
+                    </li>
+                </ul>
+            </div>
+            <div style="padding-left: 20%; padding-top: 24px; padding-right: 24px; padding-bottom: 24px; width: 100%; display: flex; flex-direction: column;">
+                <div style="display: flex; flex-direction: row;">
+                    <label style="color: brown; font-size: 20px; width: 30%; text-align: left;">欢迎！</label>
+                    <input id="findInput" type="search" placeholder="搜索学号或姓名" style="width: 40%; color: #dd483c" th:value="${keyword}">
+                    <button style="width: 20%; height: 40px; background-color: #dd483c; color: white; border: none; border-radius: 4px;" onclick="findStudent()">搜索</button>
+                    <select id="sortSelect" style="width: 30%; margin-left: 24px;" onchange="sortSelectChanged()">
+                        <option value="id" th:selected="${sortById}">根据学号升序排序</option>
+                        <option value="name" th:selected="${sortByName}">根据姓名升序排序</option>
+                    </select>
+                </div>
+                <label style="color: gray; text-align: left; margin-top: 24px; margin-bottom: 24px">湖北工业大学</label>
+                <div style="overflow: auto; height: 500px;">
+                    <table id="students-table" class="pure-table">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>学号</th>
+                            <th>姓名</th>
+                            <th>年龄</th>
+                            <th>性别</th>
+                            <th>生日</th>
+                            <th>住址</th>
+                            <th>电话</th>
+                            <th>邮箱</th>
+                        </tr>
+                        </thead>
+                        <tbody th:each="student:${students}">
+                        <tr>
+                            <td><input type="checkbox"/></td>
+                            <td th:text="${student.getId()}"></td>
+                            <td th:text="${student.getName()}"></td>
+                            <td th:text="${student.getAge()}"></td>
+                            <td th:text="${student.getSex()}"></td>
+                            <td th:text="${student.getBirth()}"></td>
+                            <td th:text="${student.getAddress()}"></td>
+                            <td th:text="${student.getPhone()}"></td>
+                            <td th:text="${student.getEmail()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="popup" id="studentPopup">
+                <div class="popup-inner">
+                    <div>
+                        <h1 id="title"></h1>
+                        <p><input id="id" placeholder="学号" type="number"/></p>
+                        <p><input id="name" placeholder="姓名"/></p>
+                        <p><input id="age" placeholder="年龄" type="number" disabled="true"/></p>
+                        <p>
+                            <select id="sex">
+                                <option value="">——请选择性别——</option>
+                                <option value="male">男</option>
+                                <option value="female">女</option>
+                            </select>
+                        </p>
+                        <p><input id="birth" placeholder="生日" type="date" onchange="updateAge()"/></p>
+                        <p><input id="address" placeholder="住址"/></p>
+                        <p><input id="phone" placeholder="电话" type="number"/></p>
+                        <p><input id="email" placeholder="邮箱" type="email"/></p>
+                        <p>
+                            <button onclick="submitStudent()">完成</button>
+                            <button onclick="closePopup()">取消</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="popup" id="loginPopup">
+                <div class="popup-inner">
+                    <div>
+                        <h1>登录</h1>
+                        <p><input id="usernameInput" placeholder="用户名"/></p>
+                        <p><input id="passwordInput" placeholder="密码" type="password"/></p>
+                        <p><input id="keep" type="checkbox"/>记住我</p>
+                        <p>
+                            <button onclick="login()">登录</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="overlay">
+            <ul id="messageList" class="message-list"></ul>
+        </div>
+    </body>
+</html>

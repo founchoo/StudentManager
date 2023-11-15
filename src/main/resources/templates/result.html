@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="zh"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="index.css"/>
+    <title>学生管理系统 - 查询结果</title>
+</head>
+<body>
+    <h1>学生管理系统</h1>
+    <h4>查询结果</h4>
+    <p><a>学号 </a><a th:text="${student.getId()}"></a></p>
+    <p><a>姓名 </a><a th:text="${student.getName()}"></a></p>
+    <p><a>性别 </a><a th:text="${student.getSex()}"></a></p>
+    <p><a>年龄 </a><a th:text="${student.getAge()}"></a></p>
+</body>
+</html>
