@@ -1,6 +1,6 @@
 # Student Manager / 学生管理系统
 
-This is a course project. Please note that database may be unavailable due to outdated server. If so, you can follow the following detail about database to make your own database in you computer and then edit src/main/resources/application.yml file.
+This is a course project. Please note that database may be unavailable due to outdated server. If so, you can follow the following detail about database to make your own database in you computer and then edit `src/main/resources/application.yml` file.
 
 ## Database / 数据库
 
